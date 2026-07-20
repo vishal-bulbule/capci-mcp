@@ -186,6 +186,12 @@ Desktop uses the `mcp-remote` bridge shim; everything else connects natively.
 **Which diagram types are supported?** Architecture, flowchart, sequence,
 class, ER, mindmap, Gantt, plus data charts and animated GIFs.
 
+## See it in action
+
+- **[Text-to-diagram examples](https://github.com/vishal-bulbule/text-to-diagram-examples)** — prompt → diagram gallery (architecture, sequence, ER, animated)
+- **[AI social post examples](https://github.com/vishal-bulbule/ai-social-post-examples)** — LinkedIn posts & animated posts from a prompt
+- **[capci.app](https://capci.app)** — try it in the browser
+
 ---
 
 Built by [Capci](https://capci.app) — turn a prompt into publish-ready visuals.
