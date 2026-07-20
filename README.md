@@ -102,6 +102,13 @@ Create `.vscode/mcp.json` in your workspace (or add to user settings):
 
 Open Copilot Chat in Agent mode → the `capci` tools are available.
 
+> **Gemini-based hosts (Antigravity, Gemini CLI, ADK) — add `x-capci-inline: preview`.**
+> These hosts feed the tool result back to the model as text, so a full-res
+> inline image overflows the token limit. `preview` returns a small inline image
+> that still renders, plus the full-res `viewUrl`/`downloadUrl`. Claude Code /
+> Desktop render images natively and don't need it. See
+> [Image rendering](#image-rendering) below.
+
 ### Google Antigravity
 
 Edit `~/.gemini/config/mcp_config.json` (or use the IDE's MCP settings panel)
@@ -113,7 +120,7 @@ remote Streamable-HTTP servers:
   "mcpServers": {
     "capci": {
       "serverUrl": "https://mcp.capci.app/mcp",
-      "headers": { "x-api-key": "YOUR_API_KEY" }
+      "headers": { "x-api-key": "YOUR_API_KEY", "x-capci-inline": "preview" }
     }
   }
 }
@@ -133,7 +140,7 @@ it treats as SSE, and not Antigravity's `serverUrl`):
   "mcpServers": {
     "capci": {
       "httpUrl": "https://mcp.capci.app/mcp",
-      "headers": { "x-api-key": "YOUR_API_KEY" }
+      "headers": { "x-api-key": "YOUR_API_KEY", "x-capci-inline": "preview" }
     }
   }
 }
@@ -146,6 +153,21 @@ Run `/mcp` inside Gemini CLI to confirm `capci` is connected.
 Any host that supports remote **Streamable HTTP** MCP servers with custom
 headers works — point it at `https://mcp.capci.app/mcp` and pass
 `x-api-key: YOUR_API_KEY`.
+
+## Image rendering
+
+Images come back as inline blocks by default. Control this per request with the
+`x-capci-inline` header:
+
+| Value | Behavior | Use for |
+|---|---|---|
+| *(omit)* | full-res inline image | **Claude Code / Desktop** — they render image blocks natively as vision |
+| `preview` | downscaled inline image + full-res `viewUrl` | **ADK, Antigravity, Gemini CLI** — Gemini re-ingests the result as text, so full-res overflows the token limit |
+| `0` | no inline image, `viewUrl` only | headless pipelines that just need the link |
+
+Every image result also includes `viewUrl` (opens inline) and `downloadUrl`
+(forces a file save) — the download link always works, even where a host's UI
+can't render the inline preview.
 
 ---
 
